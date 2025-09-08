@@ -4,20 +4,13 @@ metadata:
   name: show-params-task
 spec:
   params:
-    - name: repository-url
-    - name: revision
-    - name: ref
-    - name: event-type
+    - name: redhat-base-image
   steps:
     - name: echo-params
-      image: registry.access.redhat.com/ubi9/ubi:latest
+      image: $(params.redhat-base-image)
       script: |
         #!/bin/bash
-        echo ">>> [SHOW PARAMS] with RedHat image"
-        echo "repository-url=$(params.repository-url)"
-        echo "revision=$(params.revision)"
-        echo "ref=$(params.ref)"
-        echo "event-type=$(params.event-type)"
+        make show-params
 
 ---
 apiVersion: tekton.dev/v1beta1
@@ -25,21 +18,17 @@ kind: Task
 metadata:
   name: git-clone-task
 spec:
-  params:
-    - name: url
-    - name: rev
   workspaces:
     - name: output
+  params:
+    - name: redhat-base-image
   steps:
     - name: echo-clone
-      image: registry.access.redhat.com/ubi9/ubi:latest
+      image: $(params.redhat-base-image)
       workingDir: $(workspaces.output.path)
       script: |
         #!/bin/bash
-        echo ">>> [GIT CLONE DUMMY] with RedHat image"
-        echo "URL=$(params.url)"
-        echo "REV=$(params.rev)"
-        echo "TARGET=$(workspaces.output.path)/source"
+        make git-clone
 
 ---
 apiVersion: tekton.dev/v1beta1
@@ -47,19 +36,24 @@ kind: Task
 metadata:
   name: lint-task
 spec:
-  params:
-    - name: repository-url
   workspaces:
     - name: source
+  params:
+    - name: python
   steps:
-    - name: run-lint
-      image: registry.access.redhat.com/ubi9/python-312-minimal
+    - name: install-dependencies
+      image: $(params.python)
       workingDir: $(workspaces.source.path)
       script: |
         #!/bin/bash
-        echo ">>> [LINT DUMMY] with Python 3.11"
-        echo "Repo=$(params.repository-url)"
-        echo "Workspace=$(workspaces.source.path)"
+        pip3 install -r requirements.txt
+
+    - name: run-lint
+      image: $(params.python)
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/bash
+        make lint
 
 ---
 apiVersion: tekton.dev/v1beta1
@@ -69,10 +63,12 @@ metadata:
 spec:
   workspaces:
     - name: source
+  params:
+    - name: redhat-base-image
   steps:
     - name: echo-deploy
-      image: registry.access.redhat.com/ubi9/ubi:latest
+      image: $(params.redhat-base-image)
       workingDir: $(workspaces.source.path)
       script: |
         #!/bin/bash
-        echo ">>> [DEPLOY DUMMY] running for push to refs/heads/main with RedHat image"
+        make deploy
