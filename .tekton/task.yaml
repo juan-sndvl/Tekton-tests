@@ -23,6 +23,9 @@ spec:
       script: |
         #!/bin/bash
         set -e
+        echo "Installing git..."
+        dnf install -y git
+        echo "Cloning the repository..."
         echo "Repository: $repository-url"
         echo "Revision: $revision"
         git clone --branch "￼revision""repository-url" "$target"
