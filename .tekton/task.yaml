@@ -28,6 +28,7 @@ spec:
         echo "Cloning the repository..."
         echo "Repository: $repository_url"
         echo "Revision: $revision"
+        mkdir -p "$target"
         git clone --branch "￼revision""repository_url" "$target"
 
 ---
