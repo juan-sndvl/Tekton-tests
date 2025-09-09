@@ -14,6 +14,7 @@ spec:
       image: $(params.redhat-base-image)
       script: |
         #!/bin/bash
+        dnf install -y make
         make show-params
 
 ---
