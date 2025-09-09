@@ -5,6 +5,10 @@ metadata:
 spec:
   params:
     - name: redhat-base-image
+    - name: repository-url
+    - name: revision
+    - name: ref
+    - name: event-type
   steps:
     - name: echo-params
       image: $(params.redhat-base-image)
@@ -22,10 +26,19 @@ spec:
     - name: output
   params:
     - name: redhat-base-image
+    - name: repository-url
+    - name: revision
   steps:
     - name: echo-clone
       image: $(params.redhat-base-image)
       workingDir: $(workspaces.output.path)
+      env:
+        - name: repository-url
+          value: $(params.repository-url)
+        - name: revision
+          value: $(params.revision)
+        - name: target
+          value: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
         make git-clone
@@ -40,10 +53,14 @@ spec:
     - name: source
   params:
     - name: python
+    - name: repository-url
   steps:
     - name: install-dependencies
       image: $(params.python)
       workingDir: $(workspaces.source.path)
+      env:
+        - name: repo
+          value: $(params.repository-url)
       script: |
         #!/bin/bash
         pip3 install -r requirements.txt

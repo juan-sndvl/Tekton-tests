@@ -57,9 +57,9 @@ spec:
       params:
         - name: redhat-base-image
           value: $(params.redhat-base-image)
-        - name: url
+        - name: repository-url
           value: $(params.repository-url)
-        - name: rev
+        - name: revision
           value: $(params.revision)
       workspaces:
         - name: output
@@ -98,8 +98,8 @@ spec:
       taskRef:
         name: deploy-task
       params:
-        - name: repository-url
-          value: $(params.repository-url)
+        - name: redhat-base-image
+          value: $(params.redhat-base-image)
       workspaces:
         - name: source
           workspace: shared-workspace
