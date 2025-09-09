@@ -47,10 +47,6 @@ spec:
       description: "Run linting on the source code"
       runAfter: 
         - git-clone
-      when:
-        - input: $(params.event-type)
-          operator: in
-          values: ["pull_request"]
       taskRef: 
         name: lint-task
       params:
