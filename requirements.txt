@@ -1,0 +1,5 @@
+# Python pip packages required
+
+pylint == 2.13.8
+GitPython
+selenium >= 4.0.0

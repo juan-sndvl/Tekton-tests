@@ -1,26 +1,6 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: show-params-task
-spec:
-  params:
-    - name: redhat-base-image
-    - name: repository-url
-    - name: revision
-    - name: ref
-    - name: event-type
-  steps:
-    - name: echo-params
-      image: $(params.redhat-base-image)
-      script: |
-        #!/bin/bash
-        dnf install -y make
-        make show-params
-
----
-apiVersion: tekton.dev/v1beta1
-kind: Task
-metadata:
   name: git-clone-task
 spec:
   workspaces:
@@ -42,7 +22,10 @@ spec:
           value: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
-        make git-clone
+        set -e
+        echo "Repository: $repository-url"
+        echo "Revision: $revision"
+        git clone --branch "￼revision""repository-url" "$target"
 
 ---
 apiVersion: tekton.dev/v1beta1
@@ -53,6 +36,7 @@ spec:
   workspaces:
     - name: source
   params:
+    - name: redhat-base-image
     - name: python
     - name: repository-url
   steps:
@@ -66,11 +50,20 @@ spec:
         #!/bin/bash
         pip3 install -r requirements.txt
 
+    - name: install-make
+      image: $(params.redhat-base-image)
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/bash
+        dnf install -y make
+
     - name: run-lint
       image: $(params.python)
       workingDir: $(workspaces.source.path)
       script: |
         #!/bin/bash
+        export repository_url="$repository_url"
+        export workspace="$workspace"
         make lint
 
 ---

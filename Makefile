@@ -1,17 +1,4 @@
-.PHONY: show-params git-clone lint deploy
-
-show-params:
-	@echo ">>> [SHOW PARAMS]"
-	@echo "repository-url=$$repository_url"
-	@echo "revision=$$revision"
-	@echo "ref=$$ref"
-	@echo "event-type=$$event_type"
-
-git-clone:
-	@echo ">>> [GIT CLONE DUMMY]"
-	@echo "URL=$$url"
-	@echo "REV=$$rev"
-	@echo "TARGET=$$target"
+.PHONY: lint deploy
 
 lint:
 	@echo ">>> [LINT DUMMY]"

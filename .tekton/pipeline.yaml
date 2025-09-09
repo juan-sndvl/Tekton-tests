@@ -28,30 +28,8 @@ spec:
     - name: shared-workspace
 
   tasks:
-    - name: show-params
-      description: "Show the parameters received by the pipeline"
-      taskRef:
-        name: show-params-task
-      params:
-        - name: redhat-base-image
-          value: $(params.redhat-base-image)
-        - name: repository-url
-          value: $(params.repository-url)
-        - name: revision
-          value: $(params.revision)
-        - name: ref
-          value: $(params.ref)
-        - name: event-type
-          value: $(params.event-type)
-
     - name: git-clone
       description: "Clone the git repository"
-      runAfter:
-        - show-params
-      when:
-        - input: $(params.event-type)
-          operator: in
-          values: ["pull_request"]
       taskRef:
         name: git-clone-task
       params:
@@ -87,7 +65,7 @@ spec:
     - name: deploy
       description: "Deploy the application (only on push to main branch)"
       runAfter:
-        - show-params
+        - lint
       when:
         - input: $(params.event-type)
           operator: in
