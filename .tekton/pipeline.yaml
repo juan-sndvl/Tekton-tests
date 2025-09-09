@@ -54,6 +54,8 @@ spec:
       taskRef: 
         name: lint-task
       params:
+        - name: redhat-base-image
+          value: $(params.redhat-base-image)
         - name: python
           value: $(params.python)
         - name: repository-url
