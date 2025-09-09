@@ -14,7 +14,7 @@ spec:
       image: $(params.redhat-base-image)
       workingDir: $(workspaces.output.path)
       env:
-        - name: repository-url
+        - name: repository_url
           value: $(params.repository-url)
         - name: revision
           value: $(params.revision)
@@ -26,9 +26,9 @@ spec:
         echo "Installing git..."
         dnf install -y git
         echo "Cloning the repository..."
-        echo "Repository: $repository-url"
+        echo "Repository: $repository_url"
         echo "Revision: $revision"
-        git clone --branch "￼revision""repository-url" "$target"
+        git clone --branch "￼revision""repository_url" "$target"
 
 ---
 apiVersion: tekton.dev/v1beta1
