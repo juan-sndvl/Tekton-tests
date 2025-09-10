@@ -44,14 +44,6 @@ spec:
     - name: python
     - name: repository-url
   steps:
-    - name: install-dependencies
-      image: $(params.python)
-      workingDir: $(workspaces.output.path)/source
-      script: |
-        #!/bin/bash
-        echo "Installing pip packages..."
-        pip3 install -r requirements.txt
-
     - name: install-make
       image: $(params.redhat-base-image)
       workingDir: $(workspaces.output.path)/source
@@ -60,7 +52,7 @@ spec:
         echo "Installing make..."
         dnf install -y make
 
-    - name: run-lint
+    - name: lint
       image: $(params.python)
       workingDir: $(workspaces.output.path)/source
       env:
@@ -71,8 +63,9 @@ spec:
       script: |
         #!/bin/bash
         set -e
+        echo "Installing dependencies..."
+        pip3 install -r requirements.txt
         echo "Running linting on the repository..."
-        pylint --version
         make lint
 
 ---

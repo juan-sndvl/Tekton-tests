@@ -10,6 +10,5 @@ lint:
 	@echo "Running pylint..."
 	@$(PYLINT) $(PYLINT_FLAGS) $$workspace
 
-
 deploy:
 	@echo ">>> [DEPLOY DUMMY] running for push to refs/heads/main"
