@@ -52,6 +52,8 @@ spec:
           value: $(params.repository-url)
       script: |
         #!/bin/bash
+        pwd
+        ls -ltr
         pip3 install -r requirements.txt
 
     - name: install-make
