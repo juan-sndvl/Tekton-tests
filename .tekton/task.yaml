@@ -64,7 +64,7 @@ spec:
       image: $(params.python)
       workingDir: $(workspaces.output.path)/source
       env:
-        - name: repository-url
+        - name: repository_url
           value: $(params.repository-url)
         - name: workspace
           value: $(workspaces.output.path)/source
