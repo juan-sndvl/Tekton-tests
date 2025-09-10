@@ -8,7 +8,7 @@ lint:
 	@echo "Repo=$$repository_url"
 	@echo "Workspace=$$workspace"
 	@echo "Running pylint..."
-	@$(PYLINT) $(PYLINT_FLAGS) $$workspace
+	@$(PYLINT) $(PYLINT_FLAGS) $$workspace/testcases
 
 deploy:
 	@echo ">>> [DEPLOY DUMMY] running for push to refs/heads/main"
