@@ -49,6 +49,7 @@ spec:
       workingDir: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
+        echo "Installing pip packages..."
         pip3 install -r requirements.txt
 
     - name: install-make
@@ -56,6 +57,7 @@ spec:
       workingDir: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
+        echo "Installing make..."
         dnf install -y make
 
     - name: run-lint
@@ -68,8 +70,8 @@ spec:
           value: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
-        export repository_url="$repository_url"
-        export workspace="$workspace"
+        set -e
+        echo "Running linting on the repository..."
         make lint
 
 ---
