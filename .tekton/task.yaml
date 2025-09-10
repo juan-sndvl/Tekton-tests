@@ -46,26 +46,24 @@ spec:
   steps:
     - name: install-dependencies
       image: $(params.python)
-      workingDir: $(workspaces.output.path)
+      workingDir: $(workspaces.output.path)/source
       env:
         - name: repo
           value: $(params.repository-url)
       script: |
         #!/bin/bash
-        pwd
-        ls -ltr
         pip3 install -r requirements.txt
 
     - name: install-make
       image: $(params.redhat-base-image)
-      workingDir: $(workspaces.output.path)
+      workingDir: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
         dnf install -y make
 
     - name: run-lint
       image: $(params.python)
-      workingDir: $(workspaces.output.path)
+      workingDir: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
         export repository_url="$repository_url"
@@ -85,7 +83,7 @@ spec:
   steps:
     - name: echo-deploy
       image: $(params.redhat-base-image)
-      workingDir: $(workspaces.output.path)
+      workingDir: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
         make deploy
