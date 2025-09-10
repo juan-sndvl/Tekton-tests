@@ -57,7 +57,7 @@ spec:
         - name: repository-url
           value: $(params.repository-url)
       workspaces:
-        - name: source
+        - name: output
           workspace: shared-workspace
 
     - name: deploy
@@ -77,6 +77,6 @@ spec:
         - name: redhat-base-image
           value: $(params.redhat-base-image)
       workspaces:
-        - name: source
+        - name: output
           workspace: shared-workspace
 
