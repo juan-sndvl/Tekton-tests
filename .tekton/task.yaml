@@ -47,9 +47,6 @@ spec:
     - name: install-dependencies
       image: $(params.python)
       workingDir: $(workspaces.output.path)/source
-      env:
-        - name: repo
-          value: $(params.repository-url)
       script: |
         #!/bin/bash
         pip3 install -r requirements.txt
@@ -64,6 +61,11 @@ spec:
     - name: run-lint
       image: $(params.python)
       workingDir: $(workspaces.output.path)/source
+      env:
+        - name: repository-url
+          value: $(params.repository-url)
+        - name: workspace
+          value: $(workspaces.output.path)/source
       script: |
         #!/bin/bash
         export repository_url="$repository_url"
